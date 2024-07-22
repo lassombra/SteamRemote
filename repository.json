@@ -3,7 +3,7 @@
 		{
 			"Id": "SteamRemote",
 			"Version": "0.0.1-alpha",
-			"DownloadUrl": ""
+			"DownloadUrl": "https://github.com/lassombra/SteamRemote/releases/download/0.0.1-alpha/SteamRemote.zip"
 		}
 	]
 }

@@ -5,5 +5,5 @@
 	"Author": "lassombra",
 	"EntryMethod": "SteamRemote.Main.Load",
 	"ManagerVersion": "0.27.3",
-	"Repository": ""
+	"Repository": "https://raw.githubusercontent.com/lassombra/SteamRemote/main/repository.json"
 }
