@@ -39,7 +39,7 @@ In fact, the remote control component being added in this mod may be distributed
 Options:
 
 - Apply to S282 - Defaults to false - if true, then the 282 will also recieve the remote module
-- Patch BE2 brakes - Defaults to false - if true will modify the microshunter brakes so that its brakes only work if its power switch is on, otherwise they defer to the rest of the train (allowing for towing by manual lap brakes)
+- Add Wireless MU - Defaults to true - if true, then both the 060 and 282 will receive the ability to use the wireless MU
 
 <!-- BUILDING -->
 
