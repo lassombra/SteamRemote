@@ -36,6 +36,11 @@
 This mod is intended to introduce a remote control compatibility to the S060.  This can be used as an example for adding remote control capability to other steam engines using CCL.
 In fact, the remote control component being added in this mod may be distributed at a later date as a CCL plugin as well for simple implementation.
 
+Options:
+
+- Apply to S282 - Defaults to false - if true, then the 282 will also recieve the remote module
+- Patch BE2 brakes - Defaults to false - if true will modify the microshunter brakes so that its brakes only work if its power switch is on, otherwise they defer to the rest of the train (allowing for towing by manual lap brakes)
+
 <!-- BUILDING -->
 
 ## Building

@@ -1,6 +1,6 @@
 {
 	"Id": "SteamRemote",
-	"Version": "0.0.1-alpha",
+	"Version": "1.0.0",
 	"DisplayName": "Steam Remote",
 	"Author": "lassombra",
 	"EntryMethod": "SteamRemote.Main.Load",
