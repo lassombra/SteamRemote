@@ -39,7 +39,8 @@ In fact, the remote control component being added in this mod may be distributed
 Options:
 
 - Apply to S282 - Defaults to false - if true, then the 282 will also recieve the remote module
-- Add Wireless MU - Defaults to true - if true, then both the 060 and 282 will receive the ability to use the wireless MU
+- Add Wireless MU - Defaults to true - if true, then both the 060 and 282 will receive the ability to use the wireless MU (Wireless MU also synchs CylinderCocks if the sender and receiver are both steam locomotives.
+
 
 <!-- BUILDING -->
 

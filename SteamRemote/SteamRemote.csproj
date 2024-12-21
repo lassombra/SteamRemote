@@ -28,6 +28,17 @@
 		<PackageReference Include="UnityModManager" Version="0.27.2" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Krafs.Publicizer" Version="2.2.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Publicize Include="Assembly-CSharp" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false" />
+	</ItemGroup>
+
 	<!-- Null Checking -->
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
