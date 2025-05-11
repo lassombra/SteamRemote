@@ -37,14 +37,16 @@ namespace SteamRemote
 
 		private void OnCylinderCockUpdated(float val)
 		{
-			if (muModule?.Mode == MultipleUnitModule.MultipleUnitMode.RADIO && muModule.RemoteChannel.Transmitter == muModule)
+			if (muModule != null && muModule.UseWireless && muModule?.RemoteChannel.Transmitter == muModule)
 			{
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
 				foreach (var otherModule in muModule.RemoteChannel.devices)
 				{
 					if (otherModule != muModule) {
 						otherModule.gameObject.GetComponent<SteamMuEnhancer>()?.SetCylinderCocks(val);
 					}
 				}
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 			}
 		}
 
