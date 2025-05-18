@@ -4,12 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DV;
+using DV.CabControls;
+using DV.CabControls.Spec;
+using DV.KeyboardInput;
 using DV.MultipleUnit;
 using DV.RemoteControls;
 using DV.Simulation.Cars;
 using DV.Simulation.Controllers;
+using DV.Simulation.Ports;
+using DV.UI;
 using HarmonyLib;
 using LocoSim.Definitions;
+using SteamRemote.DummyControl;
 using UnityEngine;
 
 namespace SteamRemote
@@ -19,6 +25,7 @@ namespace SteamRemote
 	{
 		static void Prefix()
 		{
+			ControlsInstantiator.TypeMap.Add(typeof(DummyControlSpec), new ControlsInstantiator.Impl { pc = typeof(DummyControlImpl), vr = typeof(DummyControlImpl) });
 			Main.Logger.Log("Parsing Prefabs");
 			Globals.G.Types.Liveries.ForEach(type =>
 			{
@@ -51,6 +58,7 @@ namespace SteamRemote
 							enhancer.controlsOverrider = overrider;
 							enhancer.muModule = mu;
 						}
+						var dynamicBrakeControl = CreateDynamicBrakeControl(prefab, type.interiorPrefab);
 					}
 				}
 			});
@@ -90,6 +98,66 @@ namespace SteamRemote
 			var cylinderCockControl = control.gameObject.AddComponent<CylinderCockControl>();
 			cylinderCockControl.portId = control.ID + ".EXT_IN";
 			return cylinderCockControl;
+		}
+
+		private static DynamicBrakeControl CreateDynamicBrakeControl(GameObject prefab, GameObject interiorPrefab)
+		{
+			var dynamicBrakeObject = CreateDynamicBrakeControlGameObject(prefab);
+			var dynamicBrakeControl = CreateDynamicBrake(dynamicBrakeObject, prefab);
+			CreateDummyControl(dynamicBrakeObject, prefab, interiorPrefab);
+			return dynamicBrakeControl;
+		}
+
+		private static ControlSpec CreateDummyControl(GameObject dynamicBrakeObject, GameObject prefab, GameObject interiorPrefab)
+		{
+			Main.Logger.Log($"Creating dummy control on interior {interiorPrefab}");
+			var dummyControlGameObject = new GameObject();
+			dummyControlGameObject.name = "dynamicBrakeDummy";
+			dummyControlGameObject.transform.parent = interiorPrefab.transform;
+			Main.Logger.Log($"Dummy control made {dummyControlGameObject}");
+			var portFeeder = dummyControlGameObject.AddComponent<InteractablePortFeeder>();
+			portFeeder.portId = "dynamicBrake.EXT_IN";
+			Main.Logger.Log($"Dummy control port {portFeeder.portId}");
+			var spec = dummyControlGameObject.AddComponent<DummyControlSpec>();
+			spec.notches = 7;
+			interiorPrefab.GetComponentInChildren<InteractablePortFeedersController>().entries.Add(portFeeder);
+			AddKeyboardAndJoystickControlsForDynamicBrake(dummyControlGameObject, prefab, interiorPrefab);
+			return spec;
+		}
+
+		private static void AddKeyboardAndJoystickControlsForDynamicBrake(GameObject dummyControlGameObject, GameObject prefab, GameObject interiorPrefab)
+		{
+			var keyboard = dummyControlGameObject.AddComponent<MouseScrollKeyboardInput>();
+			keyboard.scrollAction = new AKeyboardInput.ActionReference();
+			keyboard.scrollAction.name = "DynamicBrakeIncremental";
+			keyboard.scrollUpKey = KeyBindings.KeyType.IncreaseDynamicBrake;
+			keyboard.scrollDownKey = KeyBindings.KeyType.DecreaseDynamicBrake;
+			var joystick = dummyControlGameObject.AddComponent<AnalogSetValueJoystickInput>();
+			joystick.action = new AKeyboardInput.ActionReference();
+			joystick.action.name = "DynamicBrakeAbsolute";
+			interiorPrefab.GetComponentInChildren<InteractablesKeyboardControl>().entries.Add(joystick);
+			interiorPrefab.GetComponentInChildren<InteractablesKeyboardControl>().entries.Add(keyboard);
+		}
+
+		private static DynamicBrakeControl CreateDynamicBrake(GameObject dynamicBrakeObject, GameObject prefab)
+		{
+			var dynamicBrakeControlDef = dynamicBrakeObject.AddComponent<ExternalControlDefinition>();
+			dynamicBrakeControlDef.ID = "dynamicBrake";
+			var dynamicBrakeControl = dynamicBrakeObject.AddComponent<DynamicBrakeControl>();
+			dynamicBrakeControl.portId = dynamicBrakeControlDef.ID + ".EXT_IN";
+			prefab.GetComponentInChildren<BaseControlsOverrider>().dynamicBrake = dynamicBrakeControl;
+			var simController = prefab.GetComponentInChildren<SimController>();
+			simController.connectionsDefinition.executionOrder = simController.connectionsDefinition.executionOrder.AddToArray(dynamicBrakeControlDef);
+			return dynamicBrakeControl;
+		}
+
+		private static GameObject CreateDynamicBrakeControlGameObject(GameObject prefab)
+		{
+			var controls = prefab.GetComponentsInChildren<ExternalControlDefinition>().First();
+			var dynamicBrakeObject = new GameObject();
+			dynamicBrakeObject.name = "dynamicBrakeControl";
+			dynamicBrakeObject.transform.parent = controls.transform.parent;
+			return dynamicBrakeObject;
 		}
 	}
 }

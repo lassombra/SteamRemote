@@ -12,6 +12,8 @@
 	<ItemGroup>
 		<Reference Include="Assembly-CSharp" />
 		<Reference Include="DV.BrakeSystem" />
+		<Reference Include="DV.CabControls.Spec" />
+		<Reference Include="DV.Interaction" />
 		<Reference Include="DV.Simulation" />
 		<Reference Include="DV.ThingTypes" />
 		<Reference Include="DV.Utils" />
@@ -37,6 +39,7 @@
 
 	<ItemGroup>
 		<Publicize Include="Assembly-CSharp" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false" />
+		<Publicize Include="DV.CabControls.Spec" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false" />
 	</ItemGroup>
 
 	<!-- Null Checking -->
