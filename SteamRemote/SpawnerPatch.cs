@@ -120,7 +120,8 @@ namespace SteamRemote
 			Main.Logger.Log($"Dummy control port {portFeeder.portId}");
 			var spec = dummyControlGameObject.AddComponent<DummyControlSpec>();
 			spec.notches = 7;
-			interiorPrefab.GetComponentInChildren<InteractablePortFeedersController>().entries.Add(portFeeder);
+			interiorPrefab.GetComponentInChildren<InteractablePortFeedersController>().entries =
+				interiorPrefab.GetComponentInChildren<InteractablePortFeedersController>().entries.AddToArray(portFeeder);
 			AddKeyboardAndJoystickControlsForDynamicBrake(dummyControlGameObject, prefab, interiorPrefab);
 			return spec;
 		}
@@ -130,13 +131,12 @@ namespace SteamRemote
 			var keyboard = dummyControlGameObject.AddComponent<MouseScrollKeyboardInput>();
 			keyboard.scrollAction = new AKeyboardInput.ActionReference();
 			keyboard.scrollAction.name = "DynamicBrakeIncremental";
-			keyboard.scrollUpKey = KeyBindings.KeyType.IncreaseDynamicBrake;
-			keyboard.scrollDownKey = KeyBindings.KeyType.DecreaseDynamicBrake;
 			var joystick = dummyControlGameObject.AddComponent<AnalogSetValueJoystickInput>();
 			joystick.action = new AKeyboardInput.ActionReference();
 			joystick.action.name = "DynamicBrakeAbsolute";
-			interiorPrefab.GetComponentInChildren<InteractablesKeyboardControl>().entries.Add(joystick);
-			interiorPrefab.GetComponentInChildren<InteractablesKeyboardControl>().entries.Add(keyboard);
+			var interactibleControl = interiorPrefab.GetComponentInChildren<InteractablesKeyboardControl>();
+			interactibleControl.entries =
+				interiorPrefab.GetComponentInChildren<InteractablesKeyboardControl>().entries.AddRangeToArray(new AKeyboardInput[] { keyboard, joystick } );
 		}
 
 		private static DynamicBrakeControl CreateDynamicBrake(GameObject dynamicBrakeObject, GameObject prefab)
