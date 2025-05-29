@@ -19,6 +19,11 @@
 			"Id": "SteamRemote",
 			"Version": "1.1.2",
 			"DownloadUrl": "https://github.com/lassombra/SteamRemote/releases/download/1.1.2/SteamRemote.zip"
+		},
+		{
+			"Id": "SteamRemote",
+			"Version": "1.1.3",
+			"DownloadUrl": "https://github.com/lassombra/SteamRemote/releases/download/1.1.3/SteamRemote.zip"
 		}
 	]
 }
