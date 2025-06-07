@@ -95,7 +95,9 @@ namespace SteamRemote
 			{
 				return null;
 			}
+			var spec = control.GetComponent<ControlSpec>();
 			var cylinderCockControl = control.gameObject.AddComponent<CylinderCockControl>();
+			cylinderCockControl.spec = spec;
 			cylinderCockControl.portId = control.ID + ".EXT_IN";
 			return cylinderCockControl;
 		}
